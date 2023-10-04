@@ -17,7 +17,7 @@
             <h3>VitaLab</h3>
         </div>
         <div class="col-md-9">
-            <form action="{% url 'cadastro' %}" method="POST">
+            <form action="{% url 'cadastro' %}" method="POST">{% csrf_token %}
                 <label>Primeiro nome</label>
                 <br>
                 <input type="text" class="input-default" name="primeiro_nome">
