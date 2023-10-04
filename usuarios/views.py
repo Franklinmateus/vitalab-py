@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.models import User 
 
 def cadastro(request):
     if request.method == 'GET':
@@ -17,5 +18,23 @@ def cadastro(request):
         
         if len(senha) < 6:
             return redirect('/usuarios/cadastro')
+        
+        try:
+            useraux = User.objects.get(username=request.POST['username'])
+            if useraux:
+                return HttpResponse("Erro, usuário já cadastrado!")
+            else:
+                user = User.objects.create_user(
+                    first_name=primeiro_nome,
+                    last_name=ultimo_nome,
+                    username=username,
+                    email=email,
+                    password=senha
+                )
+        except:
+            return redirect('/usuarios/cadastro')
+            
+        
+        return redirect('/usuarios/cadastro')
 
-        return HttpResponse("Passou!")
+        
