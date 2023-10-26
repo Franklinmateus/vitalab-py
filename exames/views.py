@@ -56,6 +56,10 @@ def gerenciar_pedidos(request):
     
 def cancelar_pedido(request, pedido_id):
     pedido = PedidosExame.objects.get(id=pedido_id)
+    
+    if not pedido.usuario == request.user:
+        messages.add_message(request, constants.ERROR, 'Esse pedido não é seu.')
+        return redirect('/exames/gerenciar_pedidos/') 
     pedido.agendado = False
     pedido.save()
     messages.add_message(request, constants.SUCCESS, 'Pedido de exame cancelado com sucesso.')
