@@ -48,12 +48,12 @@ def fechar_pedido(request):
     messages.add_message(request, constants.SUCCESS, 'Pedido de exame realizado com sucesso.')   
     return redirect('/exames/gerenciar_pedidos')
 
-
+@login_required
 def gerenciar_pedidos(request):
     pedidos_exames = PedidosExame.objects.filter(usuario=request.user)
     return render(request, 'gerenciar_pedidos.html', {'pedidos_exames':pedidos_exames})
     
-    
+@login_required
 def cancelar_pedido(request, pedido_id):
     pedido = PedidosExame.objects.get(id=pedido_id)
     
@@ -64,3 +64,8 @@ def cancelar_pedido(request, pedido_id):
     pedido.save()
     messages.add_message(request, constants.SUCCESS, 'Pedido de exame cancelado com sucesso.')
     return redirect('/exames/gerenciar_pedidos/')
+
+@login_required
+def gerenciar_exames(request):
+    exames = SolicitacaoExame.objects.filter(usuario=request.user)
+    return render(request, 'gerenciar_exames.html', {'exames':exames})
