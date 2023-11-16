@@ -69,3 +69,17 @@ def cancelar_pedido(request, pedido_id):
 def gerenciar_exames(request):
     exames = SolicitacaoExame.objects.filter(usuario=request.user)
     return render(request, 'gerenciar_exames.html', {'exames':exames})
+
+
+def permitir_abrir_exame(request, exame_id):
+    exame = SolicitacaoExame.objects.get(id=exame_id)
+    
+    if not exame.requer_senha:
+        return redirect(exame.resultado.url)
+
+    return redirect(f'/exames/solicitar_senha_exames/{exame_id}')
+
+@login_required
+def solicitar_senha_exame(request, exame_id):
+    if request.method == "GET":
+        return render(request, 'solicitar_senha_exame.html')
